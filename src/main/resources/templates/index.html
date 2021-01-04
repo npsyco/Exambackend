@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        form {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+        }
+        form label {
+            margin: 5px 10px 5px 0;
+        }
+        form input {
+            margin: 5px 10px 5px 0;
+            padding: 10px;
+        }
+        form button {
+            padding: 10px 20px;
+            font-size: 10px;
+            background-color: rgb(39, 22, 141);
+            border: 1px solid #ddd;
+            color: white;
+            cursor: pointer;
+            font-weight: bolder;
+            border-radius: 4px;
+        }
+        form button:hover {
+            background-color: rgb(113, 65, 225);
+        }
+        @media (max-width: 800px) {
+            form input {
+                margin: 10px 0;
+            }
+            form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        input[type=text] {
+            width: 20%;
+            padding: 8px 8px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students and Supervisors</title>
+    <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+</head>
+<body>
+
+<h1 align="center">Students and Supervisors</h1>
+
+<h2>Add Student</h2>
+<form action="/create" th:object="${newS}" method="post">
+    <label for="createName">Student Name</label><br>
+    <input type="text" placeholder="Name" th:field="*{name}" id="createName" required><br><br>
+    <label for="mail">Email</label><br>
+    <input type="text" placeholder="Email" th:field="*{email}" id="mail" required><br><br>
+
+    <select type="text" name="supervisorBySupervisorId" th:field="*{supervisorBySupervisorId}">
+        <option th:each="supervisor: ${supervisorList}"
+                th:value="${supervisor.supervisorId}"
+                th:text="${supervisor.name}">
+
+        />
+    </select>
+       <button type="submit">ADD STUDENT</button></a>
+</form>
+
+
+    <h2>List of Students</h2>
+    <div class="container my-2">
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Supervisor</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${studentList}">
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.email}"></td>
+            <td th:value="${student.supervisorBySupervisorId.supervisorId}" th:text="${student.supervisorBySupervisorId.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <th:block th:each="student: ${studentList}">
+        <form action="/updateStudent" method="post" style="float: contour;">
+            <input type="hidden" name="id" th:value="${student.studentId}" readonly>
+            <label for="name">Name</label>
+            <input type="text" name="name" th:value="${student.name}" placeholder="Type Name" id="name">
+            <label for="mail">Email</label>
+            <input type="text" name="mail" th:value="${student.email}" placeholder="Type Email" id="email">
+
+            <select type="text" name="supervisorBySupervisorId" th:value="${student.supervisorBySupervisorId}">
+                <option th:value="${student.supervisorBySupervisorId.supervisorId}" th:text="${student.supervisorBySupervisorId.name}"/>
+                <option th:each="supervisor: ${supervisorList}"
+                        th:if="${student.supervisorBySupervisorId.supervisorId} != ${supervisor.supervisorId}"
+                        th:value="${supervisor.supervisorId}"
+                        th:text="${supervisor.name}"
+                />
+            </select>
+        <button type="submit">Update</button>
+
+        </form>
+        <form th:action="@{'/deleteStudent/'+${studentId}}" method="post" style="float: left; clear: right">
+            <button>Delete</button>
+        </form>
+
+    </th:block>
+
+
+
+</body>
+</html>
