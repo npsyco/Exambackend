@@ -6,7 +6,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,8 +17,8 @@ public class Supervisor {
 
     private long supervisorId;
     private String name;
-    private Collection<Student> studentsById;
-
+    //private Collection<Student> studentsById;
+    private Collection<Student> studentsBySupervisorId;
 
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,46 +41,29 @@ public class Supervisor {
     }
 
 
-//    @JsonBackReference
-//    @OneToMany(mappedBy = "supervisorBySupervisorId")
-//    public Collection<Student> getStudentsBySupervisorId() {return studentsBySupervisorId;}
-//
-//    public void setStudentsBySupervisorId(Collection<Student> studentsBySupervisorId) {
-//        this.studentsBySupervisorId = studentsBySupervisorId;
-//    }
-
-
-    @OneToMany(mappedBy = "supervisorBySupervisorId")
-    public Collection<Student> getStudentsById() {
-        return studentsById;
+    @OneToMany(mappedBy = "supervisorBySupervisorId", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    public Collection<Student> getStudentsBySupervisorId() {
+        return studentsBySupervisorId;
     }
 
-    public void setStudentsById(Collection<Student> studentsById) {
-        this.studentsById = studentsById;
+    public void setStudentsBySupervisorId(Collection<Student> studentsBySupervisorId) {
+        this.studentsBySupervisorId = studentsBySupervisorId;
     }
 
-
-
-
-
-//    public Supervisor(){}
-//
-//    public Supervisor(int supervisorId, String name, Set<Student> students) {
-//        this.supervisorId = supervisorId;
-//        this.name = name;
-//        this.students = students;
+//    public Collection<Student> getStudentsById() {
+//        return studentsById;
 //    }
 
-//
-//    @Override
-//    public boolean equals(Object obj) {
-//        return super.equals(obj);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return super.hashCode();
+//    public void setStudentsBySupervisorId(Collection<Student> setStudentsBySupervisorId) {
+//        this.studentsById = studentsById;
+//        this.studentsById.forEach(student -> student.setSupervisorBySupervisorId(this));
 //    }
 
+//    public Collection<Student> getStudentsById() {
+//        return studentsById;
+//    }
+//    public void setStudentsById(Collection<Student> studentsById) {
+//        this.studentsById = studentsById;
+//    }
 
 }

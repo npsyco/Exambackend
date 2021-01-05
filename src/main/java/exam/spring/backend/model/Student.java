@@ -57,6 +57,12 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "supervisor_id", referencedColumnName = "supervisor_id", nullable = false)
+
+//    public Supervisor supervisor;
+//    public void setSupervisor(Supervisor supervisor) {
+//        this.supervisor = supervisor;
+//    }
+
     public Supervisor getSupervisorBySupervisorId()
     {return supervisorBySupervisorId;}
 
