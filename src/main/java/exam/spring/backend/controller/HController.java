@@ -65,10 +65,13 @@ public class HController {
     }
 
 
-    @PostMapping("/deleteStudent/{studentId}")
+    //@GetMapping("/showFormForUpdate/{}")
+
+    @PostMapping("/deleteStudent/")
     public String deleteStudent(@PathVariable("studentId") long studentId) {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Invalid id" + studentId));
-        studentRepository.delete(student);
+        System.out.println("delete");
+        //Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Invalid id" + studentId));
+        studentRepository.deleteById(studentId);
 
         return "redirect:/students";
     }
